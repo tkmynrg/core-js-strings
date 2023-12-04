@@ -178,9 +178,18 @@ function removeFirstOccurrences(str, value) {
  *   removeLastOccurrences('I like legends', 'end') => 'I like legs'.
  *   removeLastOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
-// eslint-disable-next-line consistent-return
-function removeLastOccurrences(/* str, substr */) {
-  throw new Error('Not implemented');
+function removeLastOccurrences(str, substr) {
+  if (substr === '') {
+    return str;
+  }
+
+  const index = str.lastIndexOf(substr);
+
+  if (index === -1) {
+    return str;
+  }
+
+  return str.substring(0, index) + str.substring(index + substr.length);
 }
 
 /**
@@ -209,8 +218,8 @@ function sumOfCodes(/* str */) {
  *   startsWith('Hello World', 'World') => false
  *   startsWith('Hello World', 'Hello') => true
  */
-function startsWith(/* str, substr */) {
-  throw new Error('Not implemented');
+function startsWith(str, substr) {
+  return str.startsWith(substr);
 }
 
 /**
@@ -224,8 +233,8 @@ function startsWith(/* str, substr */) {
  *   endsWith('Hello World', 'World') => true
  *   endsWith('Hello World', 'Hello') => false
  */
-function endsWith(/* str, substr */) {
-  throw new Error('Not implemented');
+function endsWith(str, substr) {
+  return str.endsWith(substr);
 }
 
 /**
@@ -241,8 +250,11 @@ function endsWith(/* str, substr */) {
  *   formatTime(0, 45) => "00:45"
  *   formatTime(0, 0) => "00:00"
  */
-function formatTime(/* minutes, seconds */) {
-  throw new Error('Not implemented');
+function formatTime(minutes, seconds) {
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = String(seconds).padStart(2, '0');
+
+  return `${formattedMinutes}:${formattedSeconds}`;
 }
 
 /**
@@ -306,21 +318,8 @@ function containsSubstring(str, substring) {
  *   countVowels('aEiOu') => 5
  *   countVowels('XYZ') => 1
  */
-function countVowels(str) {
-  if (!str) {
-    return 0;
-  }
-
-  const vowels = 'aeiouAEIOU';
-  let vowelCount = 0;
-  // eslint-disable-next-line no-restricted-syntax
-  for (const char of str) {
-    if (vowels.includes(char)) {
-      vowelCount += 1;
-    }
-  }
-
-  return vowelCount;
+function countVowels(/* str */) {
+  throw new Error('Not implemented');
 }
 
 /**
@@ -452,8 +451,8 @@ function extractNameFromTemplate(value) {
  *   unbracketTag('<span>') => 'span'
  *   unbracketTag('<a>') => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  return str.slice(1, -1);
 }
 
 /**
@@ -471,8 +470,8 @@ function unbracketTag(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -491,8 +490,21 @@ function extractEmails(/* str */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  return str
+    .split('')
+    .map(function (char) {
+      const code = char.charCodeAt(0);
+
+      if (code >= 65 && code <= 90) {
+        return String.fromCharCode(((code - 65 + 13) % 26) + 65);
+      }
+      if (code >= 97 && code <= 122) {
+        return String.fromCharCode(((code - 97 + 13) % 26) + 97);
+      }
+      return char;
+    })
+    .join('');
 }
 
 /**
@@ -519,8 +531,31 @@ function encodeToRot13(/* str */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const cards = [
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+  ];
+  const suits = ['♣', '♦', '♥', '♠'];
+
+  const card = value.slice(0, -1);
+  const suit = value.slice(-1);
+
+  const valueIndex = cards.indexOf(card);
+  const suitIndex = suits.indexOf(suit);
+
+  return suitIndex * 13 + valueIndex;
 }
 
 module.exports = {
